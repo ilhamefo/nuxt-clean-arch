@@ -1,5 +1,5 @@
 // UserService implements UserRepository using ApiClient
-import type { OAuthUrlResponse, User } from '../../core/domain/entities/User';
+import type { OAuthUrlResponse, User, UserResponse } from '../../core/domain/entities/User';
 import type { UserRepository } from '../../core/domain/repositories/UserRepository';
 import api from '../api/ApiClient';
 
@@ -31,5 +31,17 @@ export class UserService implements UserRepository {
   async googleAuthCallback(code: string, state: string): Promise<OAuthUrlResponse> {
     const { data } = await api.get(`/auth/google/callback?code=${code}&state=${state}`);
     return data;
+  }
+
+  async fetchUser(): Promise<UserResponse | null> {
+    const { data } = await api.get('/me');
+
+    return data ?? null;
+  }
+
+  async refreshToken(): Promise<UserResponse | null> {
+    const { data } = await api.get('/refresh-token');
+
+    return data ?? null;
   }
 }

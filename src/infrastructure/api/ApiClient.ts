@@ -6,6 +6,24 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true, // Enable cookies for CORS requests
 })
+api.interceptors.response.use(
+  (response) => {
+    // Handle successful responses
+    return response;
+  },
+  (error) => {
+    if (error.response) {
+      // Handle specific response errors
+      const { status, data } = error.response;
+      if (status === 401) {
 
+        // do refresh token logic here
+
+
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default api;

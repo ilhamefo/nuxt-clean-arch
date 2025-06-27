@@ -51,10 +51,36 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  async function fetchUser() {
+    loading.value = true;
+    error.value = null;
+    try {
+      const response = await userService.fetchUser();
+      console.log('response:', response);
+
+      user.value = response?.data?.user ?? null;
+    } catch (e: any) {
+      error.value = e.message ?? 'Fetch user failed';
+      throw e;
+    } finally {
+      loading.value = false;
+    }
+  }
+
   async function logout() {
     await userService.logout();
     user.value = null;
   }
 
-  return { user, loading, error, oAuthUrlResponse, login, register, loginWithGoogle, logout };
+  return {
+    user,
+    loading,
+    error,
+    oAuthUrlResponse,
+    login,
+    register,
+    loginWithGoogle,
+    logout,
+    fetchUser
+  };
 });

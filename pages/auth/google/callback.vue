@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useUserStore } from '../../../src/presentation/stores/user';
 import { UserService } from '../../../src/infrastructure/services/UserService';
 
@@ -28,10 +28,8 @@ onMounted(async () => {
     loading.value = true;
     error.value = '';
     try {
-        // Call backend to exchange code for user session
         const user = await userService.googleAuthCallback(code, state);
         if (user) {
-            // userStore.user = user;
             router.push('/dashboard');
         } else {
             throw new Error('Authentication failed');
