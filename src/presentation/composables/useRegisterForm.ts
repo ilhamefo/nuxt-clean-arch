@@ -31,26 +31,11 @@ export function useRegisterForm() {
     }
   }
 
-  // If Google OAuth is supported by backend, add here
-  async function onGoogleSignIn() {
-    userStore.error = null;
-    userStore.loading = true;
-    try {
-      // await userStore.loginWithGoogle?.();
-      // router.push('/dashboard');
-    } catch (e: any) {
-      userStore.error = e.message ?? 'Google sign-in failed';
-    } finally {
-      userStore.loading = false;
-    }
-  }
-
   return {
     form,
     errors,
     loading: userStore.loading,
     error: userStore.error,
     onSubmit,
-    onGoogleSignIn,
   };
 }

@@ -1,4 +1,3 @@
-// Composable for login logic
 import { useUserStore } from '../stores/user';
 import { computed } from 'vue';
 
