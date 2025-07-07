@@ -13,12 +13,8 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
   ],
   css: ['~/assets/css/tailwind.css'],
-  postcss: {
-    plugins: {
-      '@tailwindcss/postcss': {},
-      autoprefixer: {},
-    },
-  },
+  plugins: [
+  ],
   runtimeConfig: {
     public: {
       apiBase: process.env.API_BASE ?? 'http://localhost:3001/api',
@@ -33,5 +29,8 @@ export default defineNuxtConfig({
     lazy: true,
     langDir: '../locales/',
     vueI18n: '../i18n.config.ts',
+    bundle: {
+      optimizeTranslationDirective: false
+    }
   },
 })

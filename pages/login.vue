@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen bg-white flex flex-col">
+  <div class="min-h-screen bg-white flex flex-col font-slab">
     <header class="flex items-center h-16 px-6">
       <img src="https://static.figma.com/app/icon/1/favicon.png" alt="Figma Logo" class="w-8 h-8" />
     </header>
 
     <main class="flex-1 flex flex-col items-center justify-center px-4">
       <section class="w-full max-w-md flex flex-col items-center">
-        <h1 class="text-3xl font-bold mb-8 text-center">Sign in to Figma</h1>
+        <h1 class="font-slab text-3xl font-bold mb-8 text-center">Sign in to Figma</h1>
 
         <div v-if="error" class="text-red-700 text-md mb-16">
           {{ error }}
