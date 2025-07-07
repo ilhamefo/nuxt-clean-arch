@@ -31,47 +31,42 @@ api.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    if (error.response) {
-
-      const { status } = error.response;
-
-      if (status === 401) {
-
-
-        if (isRefreshing) {
-          return new Promise(function (resolve, reject) {
-            if (typeof window !== 'undefined') {
-              window.location.href = '/login';
-            }
-            failedQueue.push({ resolve, reject });
-          })
-            .then((response) => {
-
-              return api(originalRequest);
-            })
-            .catch(err => {
-              Promise.reject(err instanceof Error ? err : new Error(String(err)))
-            });
-        }
-        originalRequest._retry = true;
-
-        isRefreshing = true;
-
-        try {
-          const { data, status } = await api.get('/auth/refresh-token');
-          processQueue(null);
-          return api(originalRequest);
-        } catch (err: any) {
-          processQueue(err);
-
-          return Promise.reject(err instanceof Error ? err : new Error(String(err)));
-        } finally {
-          isRefreshing = false;
-        }
-      }
+    if (error.response && error.response.status === 401) {
+      return handle401Error(originalRequest, error);
     }
     return Promise.reject(error instanceof Error ? error : new Error(String(error)));
   }
 );
+
+async function handle401Error(originalRequest: any, error: any) {
+  if (isRefreshing) {
+    return new Promise(function (resolve, reject) {
+      if (typeof window !== 'undefined') {
+        window.location.href = '/login';
+      }
+      failedQueue.push({ resolve, reject });
+    })
+      .then(() => api(originalRequest))
+      .catch(err => Promise.reject(err instanceof Error ? err : new Error(String(err))));
+  }
+  originalRequest._retry = true;
+  isRefreshing = true;
+  try {
+    const { status } = await api.get('/auth/refresh-token');
+    if (status !== 200) {
+      if (typeof window !== 'undefined') {
+        window.location.href = '/login';
+      }
+      return Promise.reject(new Error('Failed to refresh token'));
+    }
+    processQueue(null);
+    return api(originalRequest);
+  } catch (err: any) {
+    processQueue(err);
+    return Promise.reject(err instanceof Error ? err : new Error(String(err)));
+  } finally {
+    isRefreshing = false;
+  }
+}
 
 export default api;

@@ -5,7 +5,7 @@ export default defineNuxtConfig({
     host: '127.0.0.2'
   },
   compatibilityDate: '2025-05-15',
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   modules: [
     '@pinia/nuxt',
     '@vueuse/nuxt',
@@ -13,6 +13,12 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
   ],
   css: ['~/assets/css/tailwind.css'],
+  postcss: {
+    plugins: {
+      '@tailwindcss/postcss': {},
+      autoprefixer: {},
+    },
+  },
   runtimeConfig: {
     public: {
       apiBase: process.env.API_BASE ?? 'http://localhost:3001/api',

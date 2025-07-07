@@ -1,12 +1,15 @@
-// UserService implements UserRepository using ApiClient
 import type { OAuthUrlResponse, User, UserResponse } from '../../core/domain/entities/User';
 import type { UserRepository } from '../../core/domain/repositories/UserRepository';
 import api from '../api/ApiClient';
 
 export class UserService implements UserRepository {
-  async login(username: string, password: string): Promise<User> {
-    const { data } = await api.post('/login', { username, password });
-    return data;
+  async login(email: string, password: string): Promise<User> {
+    try {
+      const { data } = await api.post('/auth/login', { email, password });
+      return data;
+    } catch (error: any) {
+      throw error;
+    }
   }
 
   async logout(): Promise<void> {

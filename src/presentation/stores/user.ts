@@ -11,14 +11,34 @@ export const useUserStore = defineStore('user', () => {
   const oAuthUrlResponse = ref<OAuthUrlResponse | null>(null);
   const loading = ref(false);
   const error = ref<string | null>(null);
+  const errorValidation = ref<{ email?: string; password?: string }>({});
+
+  function getErrorType(params: string): string | null {
+    switch (params) {
+      case "validation_failed":
+        return "Validation Failed";
+      case "invalid_credentials":
+        return "That email and password combination is incorrect.";
+      default:
+        return "Unknown Error";
+    }
+  }
 
   async function login(username: string, password: string) {
     loading.value = true;
     error.value = null;
+    errorValidation.value = {};
+
     try {
       user.value = await userService.login(username, password);
     } catch (e: any) {
-      error.value = e.message ?? 'Login failed';
+
+      if (e.status === 422) {
+        errorValidation.value = e.response.data.message ?? {};
+      }
+
+      error.value = getErrorType(e.response.data.error);
+
       throw e;
     } finally {
       loading.value = false;
@@ -56,7 +76,6 @@ export const useUserStore = defineStore('user', () => {
     error.value = null;
     try {
       const response = await userService.fetchUser();
-      console.log('response:', response);
 
       user.value = response?.data?.user ?? null;
     } catch (e: any) {
@@ -77,6 +96,7 @@ export const useUserStore = defineStore('user', () => {
     loading,
     error,
     oAuthUrlResponse,
+    errorValidation,
     login,
     register,
     loginWithGoogle,
