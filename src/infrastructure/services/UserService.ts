@@ -1,4 +1,4 @@
-import type { OAuthUrlResponse, User, UserResponse } from '../../core/domain/entities/User';
+import type { OAuthUrlResponse, Response, User, UserResponse, UserVCC, Role, Unit, UpdateUserPayload } from '../../core/domain/entities/User';
 import type { UserRepository } from '../../core/domain/repositories/UserRepository';
 import api from '../api/ApiClient';
 
@@ -46,5 +46,41 @@ export class UserService implements UserRepository {
     const { data } = await api.get('/refresh-token');
 
     return data ?? null;
+  }
+
+  async searchUsers(keyword: string): Promise<Response<UserVCC> | null> {
+    try {
+      const { data } = await api.get('/search-user?keyword=' + keyword);
+      return data ?? null;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  async loadRoles(): Promise<Response<Role> | null> {
+    try {
+      const { data } = await api.get('/roles');
+      return data ?? null;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  async loadUnits(level: string): Promise<Response<Unit> | null> {
+    try {
+      const { data } = await api.get('/units?level=' + level);
+      return data ?? null;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  async update(id:string, payload: UpdateUserPayload): Promise<Response<boolean> | null> {
+    try {
+      const { data } = await api.post('/update/'+id, payload);
+      return data ?? null;
+    } catch (error: any) {
+      throw error;
+    }
   }
 }

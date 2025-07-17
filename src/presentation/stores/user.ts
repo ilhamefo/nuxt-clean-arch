@@ -1,7 +1,7 @@
 // Pinia store for user authentication
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { OAuthUrlResponse, User } from '../../core/domain/entities/User';
+import type { OAuthUrlResponse, Role, Unit, UpdateUserPayload, User, UserVCC } from '../../core/domain/entities/User';
 import { UserService } from '../../infrastructure/services/UserService';
 
 const userService = new UserService();
@@ -12,6 +12,9 @@ export const useUserStore = defineStore('user', () => {
   const loading = ref(false);
   const error = ref<string | null>(null);
   const errorValidation = ref<{ email?: string; password?: string }>({});
+  const searchResults = ref<UserVCC[]>([]);
+  const roles = ref<Role[]>([]);
+  const units = ref<Unit[]>([]);
 
   function getErrorType(params: string): string | null {
     switch (params) {
@@ -36,6 +39,85 @@ export const useUserStore = defineStore('user', () => {
       if (e.status === 422) {
         errorValidation.value = e.response.data.message ?? {};
       }
+
+      error.value = getErrorType(e.response.data.error);
+
+      throw e;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function searchUsers(keyword: string) {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const res = await userService.searchUsers(keyword);
+
+      searchResults.value = res?.data ?? [];
+
+    } catch (e: any) {
+
+      if (e.status === 422) {
+        errorValidation.value = e.response.data.message ?? {};
+      }
+
+      error.value = getErrorType(e.response.data.error);
+
+      throw e;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function getRoles() {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const res = await userService.loadRoles();
+
+      roles.value = res?.data ?? [];
+
+    } catch (e: any) {
+
+      error.value = getErrorType(e.response.data.error);
+
+      throw e;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function getUnits(level: string) {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const res = await userService.loadUnits(level);
+
+      units.value = res?.data ?? [];
+
+    } catch (e: any) {
+
+      error.value = getErrorType(e.response.data.error);
+
+      throw e;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function update(id: string, payload: UpdateUserPayload) {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const res = await userService.update(id, payload);
+
+      return res; // Return the full response object instead of just status
+    } catch (e: any) {
 
       error.value = getErrorType(e.response.data.error);
 
@@ -97,10 +179,17 @@ export const useUserStore = defineStore('user', () => {
     error,
     oAuthUrlResponse,
     errorValidation,
+    searchResults,
+    roles,
+    units,
     login,
     register,
     loginWithGoogle,
     logout,
-    fetchUser
+    fetchUser,
+    searchUsers,
+    getRoles,
+    getUnits,
+    update,
   };
 });

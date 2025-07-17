@@ -27,13 +27,15 @@
     "eslint-plugin-prettier": "^5.5.1",
     "husky": "^9.1.7",
     "nuxt": "^3.17.5",
+    "nuxt-snackbar": "1.3.0",
     "pinia": "^3.0.3",
     "postcss": "^8.5.6",
     "prettier": "^3.6.1",
     "tailwindcss": "^4.1.10",
     "vitest": "^3.2.4",
     "vue": "^3.5.17",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "vue-select": "^4.0.0-beta.6"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^7.0.0-beta.0",

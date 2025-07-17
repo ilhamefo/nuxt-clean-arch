@@ -1,2 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto+Slab:wght@100..900&display=swap');
 @import "tailwindcss";
+
+/* VSelect custom styles */
+.v-select {
+  @apply relative;
+}
+
+.v-select .vs__dropdown-toggle {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-800;
+}
+
+.v-select .vs__dropdown-menu {
+  @apply absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto;
+}
+
+.v-select .vs__dropdown-option {
+  @apply px-4 py-2 cursor-pointer hover:bg-gray-100;
+}
+
+.v-select .vs__dropdown-option--highlight {
+  @apply bg-blue-500 text-white;
+}
+
+.v-select .vs__selected {
+  @apply text-gray-800;
+}
+
+.v-select .vs__search {
+  @apply text-gray-800 placeholder-gray-400;
+}
+
+.v-select .vs__clear {
+  @apply text-gray-400 hover:text-gray-600;
+}
+
+.v-select .vs__open-indicator {
+  @apply text-gray-400;
+}

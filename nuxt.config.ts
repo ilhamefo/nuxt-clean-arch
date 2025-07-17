@@ -11,9 +11,16 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxtjs/i18n',
     '@nuxtjs/tailwindcss',
+    'nuxt-snackbar',
   ],
+  snackbar: {
+    top: true,
+    right: true,
+    duration: 3000
+  },
   css: ['~/assets/css/tailwind.css'],
   plugins: [
+    '~/plugins/vue-select.ts',
   ],
   runtimeConfig: {
     public: {
