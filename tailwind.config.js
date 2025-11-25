@@ -13,20 +13,20 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: [
-          'Inter',
-          'system-ui',
-          '-apple-system',
-          'Segoe UI',
-          'Roboto',
-          'sans-serif',
-        ],
-        slab: [
-          'Roboto Slab',
-          'Inter',
-          'system-ui',
-          'serif',
-        ],
+        // sans: [
+        //   'Inter',
+        //   'system-ui',
+        //   '-apple-system',
+        //   'Segoe UI',
+        //   'Roboto',
+        //   'sans-serif',
+        // ],
+        // slab: [
+        //   'Roboto Slab',
+        //   'Inter',
+        //   'system-ui',
+        //   'serif',
+        // ],
       },
     },
   },

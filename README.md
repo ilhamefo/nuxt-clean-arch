@@ -30,15 +30,50 @@ This project demonstrates a Nuxt 3 setup using TypeScript and clean architecture
 - **Presentation**: Pinia store, composable, and login page
 
 ## Usage
+
+### Local Development
 1. Install dependencies: `yarn install`
 2. Run dev server: `yarn dev`
 3. Lint: `yarn lint`
 4. Test: `yarn test`
 
+### Docker Development
+
+#### Prerequisites
+- Docker and Docker Compose installed on your system
+
+#### Development with Docker
+1. Copy environment file: `cp .env.example .env`
+2. Edit `.env` file with your configuration
+3. Run development server: `docker-compose -f docker-compose.dev.yml up --build`
+4. Access application at `http://localhost:3000`
+
+#### Production with Docker
+1. Copy environment file: `cp .env.example .env`
+2. Edit `.env` file with production configuration
+3. Build and run: `docker-compose up --build -d`
+4. Access application at `http://localhost:3000`
+
+#### Docker Commands
+```bash
+# Development
+docker-compose -f docker-compose.dev.yml up --build    # Start dev server
+docker-compose -f docker-compose.dev.yml down          # Stop dev server
+
+# Production
+docker-compose up --build -d                           # Start production
+docker-compose down                                     # Stop production
+docker-compose logs -f                                 # View logs
+
+# Rebuild
+docker-compose build --no-cache                        # Rebuild images
+```
+
 ## .env Support
 Create a `.env` file in the root with your API base URL:
 ```
 API_BASE=https://your-api-url.com/api
+API_EXPORT_BASE=https://your-export-api-url.com/api
 ```
 
 ## Internationalization

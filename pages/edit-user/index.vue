@@ -238,7 +238,6 @@ const onSubmit = async () => {
     loading.value = true;
 
     try {
-        // const response = await userStore.update("1231231233", {
         const response = await userStore.update(selectedUser.value.id, {
             full_name: formData.value.name,
             username: formData.value.username,
@@ -261,8 +260,6 @@ const onSubmit = async () => {
             })
 
         } else if (response) {
-            console.log(response.data, "testtest");
-            
             snackbar.add({
                 type: 'error',
                 text: response.message || `Update failed with status: ${response.data}`,
@@ -312,10 +309,10 @@ onMounted(async () => {
 });
 
 const searchUsers = async (query: string) => {
-    // if (!query || query.length == 2) {
-    //     userStore.searchResults = []
-    //     return
-    // }
+    if (!query || query.length == 0) {
+        userStore.searchResults = []
+        return
+    }
     try {
         await userStore.searchUsers(query)
         console.log('Search results:', userStore.searchResults)
