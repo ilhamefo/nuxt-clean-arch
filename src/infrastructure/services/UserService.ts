@@ -83,4 +83,13 @@ export class UserService implements UserRepository {
       throw error;
     }
   }
+
+  async syncSearch(): Promise<Response<boolean> | null> {
+    try {
+      const { data } = await api.get('/meili-health');
+      return data ?? null;
+    } catch (error: any) {
+      throw error;
+    }
+  }
 }

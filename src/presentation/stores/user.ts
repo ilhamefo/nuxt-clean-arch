@@ -109,6 +109,24 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  async function syncSearchData() {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const res = await userService.syncSearch();
+
+      return res;
+    } catch (e: any) {
+
+      error.value = getErrorType(e.response.data.error);
+
+      throw e;
+    } finally {
+      loading.value = false;
+    }
+  }
+
   async function update(id: string, payload: UpdateUserPayload) {
     loading.value = true;
     error.value = null;
@@ -191,5 +209,6 @@ export const useUserStore = defineStore('user', () => {
     getRoles,
     getUnits,
     update,
+    syncSearchData,
   };
 });

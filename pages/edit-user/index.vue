@@ -1,6 +1,11 @@
 <template>
     <div class="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div class="bg-white shadow-lg rounded-xl p-8 w-full max-w-md">
+        <button type="button"
+            @click="onSyncSearchData"
+            class="absolute top-4 right-4 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-green-700 transition duration-200">
+            Sync Search Data
+        </button>
+        <div class="bg-white shadow-lg rounded-xl p-8 w-full max-w-md relative">
             <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">
                 {{ "Edit User" }}
             </h1>
@@ -284,6 +289,53 @@ const onSubmit = async () => {
             errorMessage = error.response.data?.message || error.response.data?.error || `Server error: ${statusCode}`;
         } else if (error.message) {
             // Network or other error
+            errorMessage = error.message;
+        }
+
+        snackbar.add({
+            type: 'error',
+            text: `${errorMessage} (Status: ${statusCode})`,
+            title: 'Error',
+        })
+    } finally {
+        loading.value = false;
+    }
+}
+
+const onSyncSearchData = async () => {
+    loading.value = true;
+
+    try {
+        const response = await userStore.syncSearchData();
+        if (response && response.status === 200) {
+            snackbar.add({
+                type: 'success',
+                text: 'Search data synchronized successfully',
+                title: 'Success',
+            })
+        } else if (response) {
+            snackbar.add({
+                type: 'error',
+                text: response.message || `Sync failed with status: ${response.data}`,
+                title: 'Error',
+            })
+        } else {
+            snackbar.add({
+                type: 'error',
+                text: 'No response received from server',
+                title: 'Error',
+            })
+        }
+    } catch (error: any) {
+        console.error('Sync error:', error);
+
+        let errorMessage = 'Failed to sync search data';
+        let statusCode = 'Unknown';
+
+        if (error.response) {
+            statusCode = error.response.status || 'Unknown';
+            errorMessage = error.response.data?.message || error.response.data?.error || `Server error: ${statusCode}`;
+        } else if (error.message) {
             errorMessage = error.message;
         }
 
