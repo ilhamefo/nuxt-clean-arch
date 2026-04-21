@@ -57,9 +57,27 @@ export class UserService implements UserRepository {
     }
   }
 
+  async searchUsersNew(keyword: string): Promise<Response<UserVCC> | null> {
+    try {
+      const { data } = await api.get('/new/search-user?keyword=' + keyword);
+      return data ?? null;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
   async loadRoles(): Promise<Response<Role> | null> {
     try {
       const { data } = await api.get('/roles');
+      return data ?? null;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  async loadRolesNew(): Promise<Response<Role> | null> {
+    try {
+      const { data } = await api.get('/new/roles');
       return data ?? null;
     } catch (error: any) {
       throw error;
@@ -75,6 +93,15 @@ export class UserService implements UserRepository {
     }
   }
 
+  async loadUnitsNew(level: string): Promise<Response<Unit> | null> {
+    try {
+      const { data } = await api.get('/new/units?level=' + level);
+      return data ?? null;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
   async update(id:string, payload: UpdateUserPayload): Promise<Response<boolean> | null> {
     try {
       const { data } = await api.post('/update/'+id, payload);
@@ -84,9 +111,27 @@ export class UserService implements UserRepository {
     }
   }
 
+  async updateNew(id:string, payload: UpdateUserPayload): Promise<Response<boolean> | null> {
+    try {
+      const { data } = await api.post('/new/update/'+id, payload);
+      return data ?? null;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
   async syncSearch(): Promise<Response<boolean> | null> {
     try {
       const { data } = await api.get('/meili-health');
+      return data ?? null;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  async syncSearchNew(): Promise<Response<boolean> | null> {
+    try {
+      const { data } = await api.get('/new/meili-health');
       return data ?? null;
     } catch (error: any) {
       throw error;

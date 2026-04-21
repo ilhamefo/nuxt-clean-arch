@@ -71,12 +71,54 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  async function searchUsersNew(keyword: string) {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const res = await userService.searchUsersNew(keyword);
+
+      searchResults.value = res?.data ?? [];
+
+    } catch (e: any) {
+
+      if (e.status === 422) {
+        errorValidation.value = e.response.data.message ?? {};
+      }
+
+      error.value = getErrorType(e.response.data.error);
+
+      throw e;
+    } finally {
+      loading.value = false;
+    }
+  }
+
   async function getRoles() {
     loading.value = true;
     error.value = null;
 
     try {
       const res = await userService.loadRoles();
+
+      roles.value = res?.data ?? [];
+
+    } catch (e: any) {
+
+      error.value = getErrorType(e.response.data.error);
+
+      throw e;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function getRolesNew() {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const res = await userService.loadRolesNew();
 
       roles.value = res?.data ?? [];
 
@@ -109,12 +151,49 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  async function getUnitsNew(level: string) {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const res = await userService.loadUnitsNew(level);
+
+      units.value = res?.data ?? [];
+
+    } catch (e: any) {
+
+      error.value = getErrorType(e.response.data.error);
+
+      throw e;
+    } finally {
+      loading.value = false;
+    }
+  }
+
   async function syncSearchData() {
     loading.value = true;
     error.value = null;
 
     try {
       const res = await userService.syncSearch();
+
+      return res;
+    } catch (e: any) {
+
+      error.value = getErrorType(e.response.data.error);
+
+      throw e;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function syncSearchDataNew() {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const res = await userService.syncSearchNew();
 
       return res;
     } catch (e: any) {
@@ -135,6 +214,24 @@ export const useUserStore = defineStore('user', () => {
       const res = await userService.update(id, payload);
 
       return res; // Return the full response object instead of just status
+    } catch (e: any) {
+
+      error.value = getErrorType(e.response.data.error);
+
+      throw e;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function updateNew(id: string, payload: UpdateUserPayload) {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const res = await userService.updateNew(id, payload);
+
+      return res;
     } catch (e: any) {
 
       error.value = getErrorType(e.response.data.error);
@@ -206,9 +303,14 @@ export const useUserStore = defineStore('user', () => {
     logout,
     fetchUser,
     searchUsers,
+    searchUsersNew,
     getRoles,
+    getRolesNew,
     getUnits,
+    getUnitsNew,
     update,
+    updateNew,
     syncSearchData,
+    syncSearchDataNew,
   };
 });
