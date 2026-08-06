@@ -1,7 +1,7 @@
 // Pinia store for user authentication
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { OAuthUrlResponse, Role, Unit, UpdateUserPayload, User, UserVCC } from '../../core/domain/entities/User';
+import type { OAuthUrlResponse, Role, SearchUserPayload, Unit, UpdateIsBlockedPayload, UpdateUserPayload, User, UserVCC } from '../../core/domain/entities/User';
 import { UserService } from '../../infrastructure/services/UserService';
 
 const userService = new UserService();
@@ -71,12 +71,12 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  async function searchUsersNew(keyword: string) {
+  async function searchUsersNew(payload: SearchUserPayload) {
     loading.value = true;
     error.value = null;
 
     try {
-      const res = await userService.searchUsersNew(keyword);
+      const res = await userService.searchUsersNew(payload);
 
       searchResults.value = res?.data ?? [];
 
@@ -242,6 +242,24 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+    async function updateIsBlocked(payload: UpdateIsBlockedPayload) {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const res = await userService.updateIsBlocked(payload);
+
+      return res;
+    } catch (e: any) {
+
+      error.value = getErrorType(e.response.data.error);
+
+      throw e;
+    } finally {
+      loading.value = false;
+    }
+  }
+
   async function register(email: string, password: string) {
     loading.value = true;
     error.value = null;
@@ -310,6 +328,7 @@ export const useUserStore = defineStore('user', () => {
     getUnitsNew,
     update,
     updateNew,
+    updateIsBlocked,
     syncSearchData,
     syncSearchDataNew,
   };

@@ -48,6 +48,7 @@ export interface UserVCC {
   unit_code: string;
   unit_name: string;
   status: number;
+  is_blocked: boolean;
   rejected_at: string | null;
   remember_token: string | null;
   phone: string | null;
@@ -82,6 +83,17 @@ export interface UpdateUserPayload {
   unit_code: string;
   unit_name: string;
   username: string;
+  is_blocked: boolean;
   password: string | null;
   password_confirmation: string | null;
+}
+
+export interface UpdateIsBlockedPayload {
+  id: string;
+  is_blocked: boolean;
+}
+
+export interface SearchUserPayload {
+  keyword: string;
+  is_blocked: boolean;
 }

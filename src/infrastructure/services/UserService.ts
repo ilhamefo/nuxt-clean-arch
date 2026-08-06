@@ -1,4 +1,4 @@
-import type { OAuthUrlResponse, Response, User, UserResponse, UserVCC, Role, Unit, UpdateUserPayload } from '../../core/domain/entities/User';
+import type { OAuthUrlResponse, Response, User, UserResponse, UserVCC, Role, Unit, UpdateUserPayload, SearchUserPayload, UpdateIsBlockedPayload } from '../../core/domain/entities/User';
 import type { UserRepository } from '../../core/domain/repositories/UserRepository';
 import api from '../api/ApiClient';
 
@@ -57,9 +57,9 @@ export class UserService implements UserRepository {
     }
   }
 
-  async searchUsersNew(keyword: string): Promise<Response<UserVCC> | null> {
+  async searchUsersNew(payload: SearchUserPayload): Promise<Response<UserVCC> | null> {
     try {
-      const { data } = await api.get('/new/search-user?keyword=' + keyword);
+      const { data } = await api.get('/new/search-user', { params: payload });
       return data ?? null;
     } catch (error: any) {
       throw error;
@@ -114,6 +114,15 @@ export class UserService implements UserRepository {
   async updateNew(id:string, payload: UpdateUserPayload): Promise<Response<boolean> | null> {
     try {
       const { data } = await api.post('/new/update/'+id, payload);
+      return data ?? null;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+    async updateIsBlocked(payload: UpdateIsBlockedPayload): Promise<Response<boolean> | null> {
+    try {
+      const { data } = await api.post('/new/update-is-blocked', payload);
       return data ?? null;
     } catch (error: any) {
       throw error;

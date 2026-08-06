@@ -1,7 +1,6 @@
 <template>
     <div class="min-h-screen bg-gray-50 flex items-center justify-center">
-        <button type="button"
-            @click="onSyncSearchData"
+        <button type="button" @click="onSyncSearchData"
             class="absolute top-4 right-4 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-green-700 transition duration-200">
             Sync Search Data
         </button>
@@ -104,6 +103,29 @@
                     </select>
                 </div>
 
+                <label class="inline-flex items-center cursor-pointer">
+                    <input type="checkbox" class="sr-only peer" v-model="formData.is_blocked" />
+
+                    <div class="relative w-11 h-6 bg-gray-300 rounded-full
+                        peer-checked:bg-blue-600
+                        transition-colors duration-300
+                        after:content-['']
+                        after:absolute
+                        after:top-0.5
+                        after:left-0.5
+                        after:w-5
+                        after:h-5
+                        after:bg-white
+                        after:rounded-full
+                        after:transition-transform
+                        after:duration-300
+                        peer-checked:after:translate-x-5">
+                    </div>
+
+                    <span class="ml-3 text-sm font-medium text-gray-900" v-text="formData.is_blocked ? 'Blocked' : 'Not Blocked'">
+                    </span>
+                </label>
+
                 <div>
                     <label class="block mb-2 font-semibold text-gray-700" for="password">{{ "Password" }}</label>
                     <input id="password" type="text" v-model="formData.password"
@@ -156,6 +178,7 @@ const formData = ref({
     level: null as number | null,
     unit_code: '',
     roles: [] as string[],
+    is_blocked: false as boolean,
 })
 
 watch(() => formData.value.level, (newLevel, oldLevel) => {
@@ -172,6 +195,7 @@ watch(selectedUser, async (newUser) => {
         formData.value.jabatan = newUser.jabatan || ''
         formData.value.status = newUser.status || 0
         formData.value.level = newUser.level || 0
+        formData.value.is_blocked = newUser.is_blocked || false
 
         // Load units first based on user's level, then select the unit
         if (newUser.level !== null && newUser.level !== undefined) {
@@ -215,6 +239,7 @@ watch(selectedUser, async (newUser) => {
         formData.value.roles = []
         selectedUnit.value = null
         formData.value.unit_code = ''
+        formData.value.is_blocked = false
     }
 })
 
@@ -254,6 +279,7 @@ const onSubmit = async () => {
             level: formData.value.level !== null ? String(formData.value.level) : null,
             unit_code: selectedUnit.value ? selectedUnit.value.code : '',
             roles: formData.value.roles,
+            is_blocked: formData.value.is_blocked,
             unit_name: selectedUnit.value ? selectedUnit.value.label : '',
         })
 
@@ -279,10 +305,10 @@ const onSubmit = async () => {
         }
     } catch (error: any) {
         console.error('Update error:', error);
-        
+
         let errorMessage = 'Failed to update user';
         let statusCode = 'Unknown';
-        
+
         if (error.response) {
             // Server responded with error status
             statusCode = error.response.status || 'Unknown';
@@ -366,7 +392,7 @@ const searchUsers = async (query: string) => {
         return
     }
     try {
-        await userStore.searchUsersNew(query)
+        await userStore.searchUsersNew({is_blocked: false, keyword: query})
         console.log('Search results:', userStore.searchResults)
     } catch (error) {
         console.error('Search error:', error)
