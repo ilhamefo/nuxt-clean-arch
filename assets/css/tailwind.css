@@ -1,6 +1,77 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto+Slab:wght@100..900&display=swap'); */
 @import "tailwindcss";
 
+@theme {
+  --color-matcha-50: #F4F8F4;
+  --color-matcha-100: #E6F0E5;
+  --color-matcha-200: #CBE6C7;
+  --color-matcha-300: #B0D7AC;
+  --color-matcha-400: #8FB78F;
+  --color-matcha-500: #749E74;
+  --color-matcha-600: #588058;
+  --color-matcha-700: #3E603E;
+  --color-matcha: #8FB78F;
+
+  --color-pistachio-50: #F7FAF6;
+  --color-pistachio-100: #EDF7EC;
+  --color-pistachio-200: #CBE6C7;
+  --color-pistachio-300: #B2D8AC;
+  --color-pistachio-400: #93C48E;
+  --color-pistachio-500: #76AB6D;
+  --color-pistachio: #CBE6C7;
+
+  --color-azure-50: #F4F8F9;
+  --color-azure-100: #E6EFF0;
+  --color-azure-200: #CDE0E2;
+  --color-azure-300: #B4CCCF;
+  --color-azure-400: #90B0B4;
+  --color-azure-500: #6B9297;
+  --color-azure-600: #50777B;
+  --color-azure: #B4CCCF;
+
+  --color-indigo-50: #F0F5F8;
+  --color-indigo-100: #DCE8EE;
+  --color-indigo-200: #B4CFDD;
+  --color-indigo-300: #82ADC3;
+  --color-indigo-400: #4F839E;
+  --color-indigo-500: #28536B;
+  --color-indigo-600: #204458;
+  --color-indigo-700: #183546;
+  --color-indigo-800: #102532;
+  --color-indigo-900: #091720;
+  --color-indigo: #28536B;
+
+  --color-brand-50: #F0F5F8;
+  --color-brand-100: #DCE8EE;
+  --color-brand-200: #B4CFDD;
+  --color-brand-300: #82ADC3;
+  --color-brand-400: #4F839E;
+  --color-brand-500: #28536B;
+  --color-brand-600: #204458;
+  --color-brand-700: #183546;
+  --color-brand-800: #102532;
+  --color-brand-900: #091720;
+  --color-brand: #28536B;
+
+  --color-orchid-50: #FEF6F8;
+  --color-orchid-100: #FDF0F4;
+  --color-orchid-200: #FACEE0;
+  --color-orchid-300: #F3A5BC;
+  --color-orchid-400: #E47796;
+  --color-orchid-500: #D04F73;
+  --color-orchid-600: #AD3454;
+  --color-orchid: #F3A5BC;
+
+  --color-peach-50: #FFF9F5;
+  --color-peach-100: #FFF3EB;
+  --color-peach-200: #FFE2D1;
+  --color-peach-300: #FFC49B;
+  --color-peach-400: #FA9F66;
+  --color-peach-500: #E67A38;
+  --color-peach-600: #C25B1E;
+  --color-peach: #FFC49B;
+}
+
 /* VSelect custom styles */
 .v-select {
   @apply relative;
@@ -37,3 +108,4 @@
 .v-select .vs__open-indicator {
   @apply text-gray-400;
 }
+
