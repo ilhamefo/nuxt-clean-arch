@@ -27,6 +27,7 @@ const navLinks = [
   { label: 'Edit User (New)', path: '/edit-user/new' },
   { label: 'Blocked Users', path: '/blocked-users' },
   { label: 'Mutasi User', path: '/mutasi-user' },
+  { label: 'User Approval', path: '/user-approval' },
 ];
 
 const isCurrent = (path: string) => {
