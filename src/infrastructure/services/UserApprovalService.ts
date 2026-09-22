@@ -25,7 +25,7 @@ export class UserApprovalService implements UserApprovalRepository {
         if (params.order_by !== undefined && params.order_by !== '') {
           cleanParams.order_by = params.order_by;
         }
-        if (params.order_direction !== undefined && params.order_direction !== '') {
+        if (params.order_direction !== undefined) {
           cleanParams.order_direction = params.order_direction;
         }
       }
